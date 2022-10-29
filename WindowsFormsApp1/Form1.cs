@@ -50,7 +50,7 @@ namespace WindowsFormsApp1
                 MainList.Sort();
                 Data.MainList = MainList;
                 dataGridView2.Rows.Clear();
-                dataGridView3.Rows.Clear();
+                
                 double probab = 0;
                 Excel.Application excel = new Excel.Application();
                 while (Xn < MainList.Max())
@@ -70,47 +70,41 @@ namespace WindowsFormsApp1
                     chart1.Series[0].Points.AddXY(Math.Round(Xn + Data.DeltaX / 2, 3), (double)n / (double)MainList.Count);
                     p = excel.WorksheetFunction.Norm_Dist(XnNext, Data.SelectMid, Math.Sqrt(Data.Disperse), true) - excel.WorksheetFunction.Norm_Dist(Xn, Data.SelectMid, Math.Sqrt(Data.Disperse), true);
                     dataGridView2.Rows.Add($"{Math.Round(Xn, 3)}-{Math.Round(XnNext, 3)}", Math.Round((double)n / (double)MainList.Count,3), Math.Round(p,3));
-                    Data.ResultList1.Add(new PointDooble(Xn, n, p));
-                    //Data.ResultList3.Add(new PointDooble(Xn, p));
-                   // Data.ResultList4.Add(new PointDooble(n, p));
-                   // dataGridView3.Rows.Add($"{Math.Round(Data.ResultList3.Last().x, 3)} - {Math.Round(XnNext, 3)}", Math.Round(Data.ResultList3.Last().y, 3), (double)n / (double)MainList.Count);
-
+                    Data.ResultList1.Add(new PointDooble(Xn, n, p));                  
                     probab += (double)n / (double)MainList.Count;
-                    //Data.ResultList2.Add(new PointDooble(Xn, probab));
                     chart2.Series[0].Points.AddXY(Math.Round(Xn, 3), probab);
                     Xn = XnNext;
                 }
                 chart2.Series[0].Points.AddXY(Math.Round(Xn + Data.DeltaX, 3), probab);
-                //Data.ResultList2.Add(new PointDooble(Xn + Data.DeltaX, probab));
                 Data.CoefficienAssim = Data.MainList.Sum(x => Math.Pow(x - Data.SelectMid, 3) / ((Data.MainList.Count - 1) * Math.Pow(Data.Disperse, 1.5)));
                 label3.Text = "Коэффициент ассиметрии = " + Math.Round(Data.CoefficienAssim, 3);
                 Data.Eccess = Data.MainList.Sum(x => Math.Pow(x - Data.SelectMid, 4) / ((Data.MainList.Count - 1) * Math.Pow(Data.Disperse, 2))) - 3;
                 label4.Text = "Эксцесс = " + Math.Round(Data.Eccess, 3);
                 {
-                    double xipow2calc = Data.ResultList1.Sum(x => Math.Pow((x.y - Data.MainList.Count() * x.z), 2) / (Data.MainList.Count() * x.z));
-                    label6.Text = "Хи ^ 2 выч = " + xipow2calc;
-                    double level;
-                    double.TryParse(textBox1.Text, out level);
-                    if (level < 0)
+                    Data.Xipow2calc = Data.ResultList1.Sum(x => Math.Pow((x.y - Data.MainList.Count() * x.z), 2) / (Data.MainList.Count() * x.z));
+                    label6.Text = "Хи ^ 2 выч = " + Data.Xipow2calc;
+                    
+                    double.TryParse(textBox1.Text, out Data.Level);
+                    if (Data.Level < 0)
                     {
-                        level = 0.05;
+                        Data.Level = 0.05;
                     }
-                    else if (level > 1)
+                    else if (Data.Level > 1)
                     {
-                        level = 0.95;
+                        Data.Level = 0.95;
                     }
-                    double xipow2tabl = excel.WorksheetFunction.ChiSq_Inv_RT(level, MainList.Count - 1);
-                    label5.Text = "Хи ^ 2 табл = " + xipow2tabl;
+                    Data.Xipow2tabl = excel.WorksheetFunction.ChiSq_Inv_RT(Data.Level, MainList.Count - 1);
+                    label5.Text = "Хи ^ 2 табл = " + Data.Xipow2tabl;
 
-                    if ((Data.CoefficienAssim == 0) && (Data.Eccess == 0) || (xipow2calc <= xipow2tabl))
+                    if ((Data.CoefficienAssim == 0) && (Data.Eccess == 0) || (Data.Xipow2calc <= Data.Xipow2tabl))
                     {
-                        if((Data.CoefficienAssim == 0) && (Data.Eccess == 0) && (xipow2calc <= xipow2tabl))
+                        if((Data.CoefficienAssim == 0) && (Data.Eccess == 0) && (Data.Xipow2calc <= Data.Xipow2tabl))
                         {
                             MessageBox.Show("Эмпирический закон случайной величины \nсоответствует теоретическому нормальному закону.");
                         }
                         else
                         {
-                            if (xipow2calc <= xipow2tabl)
+                            if (Data.Xipow2calc <= Data.Xipow2tabl)
                             {
                                 MessageBox.Show("Эмпирический закон случайной величины \nсоответствует теоретическому нормальному закону, но только по критерию Пирсона.");
                             }
@@ -164,7 +158,7 @@ namespace WindowsFormsApp1
             label2.Text = "Оценка дисперсии = " + Math.Round(Data.Disperse);
             dataGridView1.Rows.Clear();
             dataGridView2.Rows.Clear();
-            dataGridView3.Rows.Clear();           
+                    
             chart1.Series[0].Points.Clear();
             chart2.Series[0].Points.Clear();
             foreach (double x in Data.MainList)
@@ -180,16 +174,11 @@ namespace WindowsFormsApp1
                 chart2.Series[0].Points.AddXY(Math.Round(point.x, 3), Math.Round(probab, 3));
             }
             chart2.Series[0].Points.AddXY(Math.Round(Data.ResultList1.Last().x+Data.DeltaX, 3), Math.Round(probab, 3));
-            /*foreach (PointDooble point in Data.ResultList2)
-            {
-                
-            }
-            foreach (PointDooble point in Data.ResultList3)
-            {
-                dataGridView3.Rows.Add($"{Math.Round(point.x, 3)} - {Math.Round(point.x + Data.DeltaX,3)}", point.y);
-            }*/
             label3.Text = "Коэффициент ассиметрии = " + Math.Round(Data.CoefficienAssim,3);
             label4.Text = "Эксцесс = " + Math.Round(Data.Eccess,3);
+            label5.Text = "Хи ^ 2 табл = " + Data.Xipow2tabl;
+            label6.Text = "Хи ^ 2 выч = " + Data.Xipow2calc;
+            textBox1.Text = Data.Level.ToString();
         }
     }
 }
