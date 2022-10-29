@@ -44,7 +44,6 @@ namespace WindowsFormsApp1
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.Intervals = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EmpFreq = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.chart2 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.button2 = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
@@ -56,6 +55,12 @@ namespace WindowsFormsApp1
             this.dataGridView3 = new System.Windows.Forms.DataGridView();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
@@ -70,14 +75,14 @@ namespace WindowsFormsApp1
             // 
             chartArea5.Name = "ChartArea1";
             this.chart1.ChartAreas.Add(chartArea5);
-            this.chart1.Location = new System.Drawing.Point(459, 6);
+            this.chart1.Location = new System.Drawing.Point(557, 0);
             this.chart1.Name = "chart1";
             series5.ChartArea = "ChartArea1";
             series5.Name = "Series1";
             series5.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Grayscale;
             series5.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
             this.chart1.Series.Add(series5);
-            this.chart1.Size = new System.Drawing.Size(860, 286);
+            this.chart1.Size = new System.Drawing.Size(762, 292);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
             title5.Name = "Title1";
@@ -136,11 +141,12 @@ namespace WindowsFormsApp1
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView2.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Intervals,
-            this.EmpFreq});
+            this.EmpFreq,
+            this.Column4});
             this.dataGridView2.Location = new System.Drawing.Point(205, 0);
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.ReadOnly = true;
-            this.dataGridView2.Size = new System.Drawing.Size(248, 597);
+            this.dataGridView2.Size = new System.Drawing.Size(346, 597);
             this.dataGridView2.TabIndex = 5;
             // 
             // Intervals
@@ -155,21 +161,11 @@ namespace WindowsFormsApp1
             this.EmpFreq.Name = "EmpFreq";
             this.EmpFreq.ReadOnly = true;
             // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(462, 6);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(202, 17);
-            this.checkBox1.TabIndex = 9;
-            this.checkBox1.Text = "Отображение нулевых интервалов";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            // 
             // chart2
             // 
             chartArea6.Name = "ChartArea1";
             this.chart2.ChartAreas.Add(chartArea6);
-            this.chart2.Location = new System.Drawing.Point(462, 298);
+            this.chart2.Location = new System.Drawing.Point(557, 298);
             this.chart2.Name = "chart2";
             series6.BorderWidth = 4;
             series6.ChartArea = "ChartArea1";
@@ -178,7 +174,7 @@ namespace WindowsFormsApp1
             series6.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
             series6.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
             this.chart2.Series.Add(series6);
-            this.chart2.Size = new System.Drawing.Size(860, 310);
+            this.chart2.Size = new System.Drawing.Size(765, 310);
             this.chart2.TabIndex = 7;
             this.chart2.Text = "chart2";
             title6.Name = "Title1";
@@ -237,7 +233,6 @@ namespace WindowsFormsApp1
             // 
             this.tabPage1.Controls.Add(this.dataGridView1);
             this.tabPage1.Controls.Add(this.dataGridView2);
-            this.tabPage1.Controls.Add(this.checkBox1);
             this.tabPage1.Controls.Add(this.chart2);
             this.tabPage1.Controls.Add(this.chart1);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
@@ -266,11 +261,12 @@ namespace WindowsFormsApp1
             this.dataGridView3.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView3.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
-            this.Column2});
+            this.Column2,
+            this.Column3});
             this.dataGridView3.Location = new System.Drawing.Point(8, 6);
             this.dataGridView3.Name = "dataGridView3";
             this.dataGridView3.ReadOnly = true;
-            this.dataGridView3.Size = new System.Drawing.Size(249, 591);
+            this.dataGridView3.Size = new System.Drawing.Size(347, 591);
             this.dataGridView3.TabIndex = 0;
             // 
             // Column1
@@ -287,11 +283,63 @@ namespace WindowsFormsApp1
             this.Column2.Name = "Column2";
             this.Column2.ReadOnly = true;
             // 
+            // Column3
+            // 
+            this.Column3.Frozen = true;
+            this.Column3.HeaderText = "Эмпирические частоты";
+            this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(613, 637);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(61, 13);
+            this.label5.TabIndex = 14;
+            this.label5.Text = "Хи^2 таб =";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(611, 662);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(63, 13);
+            this.label6.TabIndex = 15;
+            this.label6.Text = "Хи^2 выч =";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(475, 637);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(117, 13);
+            this.label7.TabIndex = 16;
+            this.label7.Text = "Уровень значимости:";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(478, 655);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(100, 20);
+            this.textBox1.TabIndex = 17;
+            this.textBox1.Text = "0,95";
+            // 
+            // Column4
+            // 
+            this.Column4.HeaderText = "Теоретические частоты";
+            this.Column4.Name = "Column4";
+            this.Column4.ReadOnly = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1350, 684);
+            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
@@ -308,7 +356,6 @@ namespace WindowsFormsApp1
             ((System.ComponentModel.ISupportInitialize)(this.chart2)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).EndInit();
             this.ResumeLayout(false);
@@ -327,7 +374,6 @@ namespace WindowsFormsApp1
         private System.Windows.Forms.DataGridViewTextBoxColumn Intervals;
         private System.Windows.Forms.DataGridViewTextBoxColumn EmpFreq;
         private System.Windows.Forms.DataGridViewTextBoxColumn MainData;
-        private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart2;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label3;
@@ -336,9 +382,15 @@ namespace WindowsFormsApp1
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.DataGridView dataGridView3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
     }
 }
 
