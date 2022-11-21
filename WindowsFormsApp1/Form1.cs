@@ -180,5 +180,97 @@ namespace WindowsFormsApp1
             label6.Text = "Хи ^ 2 выч = " + Data.Xipow2calc;
             textBox1.Text = Data.Level.ToString();
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            List<double> List1 = new List<double>();
+            List<double> List2 = new List<double>();
+            for (int i = 0; i < dataGridView3.RowCount - 1; i++)
+            {
+                double x;
+                if (dataGridView3[0, i].Value != null && double.TryParse(dataGridView3[0, i].Value.ToString(), out x))
+                {
+                    List1.Add(x);
+                }
+                if (dataGridView3[1, i].Value!=null && double.TryParse(dataGridView3[1, i].Value.ToString(), out x))
+                {
+                    List2.Add(x);
+                }
+            }
+            double Disperce1 = List1.Sum(x => Math.Pow(x - List1.Sum() / List1.Count, 2)) / (List1.Count - 1);
+            label9.Text = "Дисперсия 1 = " + Math.Round(Disperce1,3);
+            double Disperce2 = List2.Sum(x => Math.Pow(x - List2.Sum() / List2.Count, 2)) / (List2.Count - 1);
+            label10.Text = "Дисперсия 2 =" + Math.Round(Disperce2,3);
+            double Fcalc;
+            double Ftabl;
+            double Level;
+            Excel.Application excel = new Excel.Application();
+            double.TryParse(textBox2.Text, out Level);
+            if (Disperce1 > Disperce2)
+            {
+                Fcalc = (double)Disperce1 / Disperce2;
+                Ftabl = excel.WorksheetFunction.F_Inv_RT(Level, List1.Count - 1, List2.Count - 1); 
+            }
+            else
+            {
+                Fcalc = (double)Disperce2 / Disperce1;
+                Ftabl = excel.WorksheetFunction.F_Inv_RT(Level, List2.Count - 1, List1.Count - 1);
+            }
+            label11.Text = "Fвыч. = " + Fcalc;
+            label12.Text = "Fтабл. = " + Ftabl;
+
+            if (Fcalc>Ftabl)
+            {
+                MessageBox.Show("Гипотеза о том, что дисперсии равны - отвергнута.");
+            }
+            else
+            {
+                MessageBox.Show("Гипотеза о том, что дисперсии равны - подтвердилась.");
+            }
+
+        }
+
+        private void dataGridView4_CellEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            if (dataGridView4[0, dataGridView4.RowCount-2].Value == null)
+            {
+                dataGridView4[0, dataGridView4.RowCount - 2].Value = 0;
+            }
+            if (dataGridView4[1, dataGridView4.RowCount - 2].Value == null)
+            {
+                dataGridView4[1, dataGridView4.RowCount - 2].Value = 0;
+            }
+            if (dataGridView4[2, dataGridView4.RowCount - 2].Value == null)
+            {
+                dataGridView4[2, dataGridView4.RowCount - 2].Value = 0;
+            }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            List<PointDooble> points = new List<PointDooble>();
+            double x, y, z;
+            for (int i = 0; i < dataGridView4.RowCount-1; i++)
+            {
+                double.TryParse(dataGridView4[0, i].Value.ToString(), out x);
+                double.TryParse(dataGridView4[1, i].Value.ToString(), out y);
+                double.TryParse(dataGridView4[2, i].Value.ToString(), out z);
+                points.Add(new PointDooble(x, y, z));
+            }
+            double xmid = points.Sum(n=>n.x) / points.Count, ymid=points.Sum(n=>n.y) / points.Count, zmid=points.Sum(n=>n.z) / points.Count;
+            double xdisperse = points.Sum(n => Math.Pow(n.x - xmid, 2)) / (points.Count - 1), ydisperse = points.Sum(n => Math.Pow(n.y - ymid, 2)) / (points.Count - 1), zdisperse = points.Sum(n => Math.Pow(n.z - zmid, 2)) / (points.Count - 1);
+            x = points.Sum(n => (n.x - xmid) * (n.y - ymid) / (points.Count - 1) / xdisperse / ydisperse);
+            y = points.Sum(n => (n.y - ymid) * (n.z - zmid) / (points.Count - 1) / ydisperse / zdisperse);
+            z = points.Sum(n => (n.z - zmid) * (n.x - xmid) / (points.Count - 1) / zdisperse / xdisperse);
+            dataGridView5.ColumnCount = 3;
+            dataGridView5.RowCount = 3;
+            for(int i = 0;i<3; i++) dataGridView5.Rows[i].Cells[i].Value = 1;
+            dataGridView5.Rows[0].Cells[1].Value = Math.Round(x, 3);
+            dataGridView5.Rows[0].Cells[2].Value = Math.Round(y, 3);
+            dataGridView5.Rows[1].Cells[2].Value = Math.Round(z, 3);
+            dataGridView5.AutoResizeColumns();
+            
+
+        }
     }
 }
