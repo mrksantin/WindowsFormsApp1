@@ -410,7 +410,7 @@ namespace WindowsFormsApp1
             this.dataGridView4.Name = "dataGridView4";
             this.dataGridView4.Size = new System.Drawing.Size(347, 616);
             this.dataGridView4.TabIndex = 0;
-            this.dataGridView4.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView4_CellEnter);
+            this.dataGridView4.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView4_CellEndEdit);
             // 
             // Column3
             // 

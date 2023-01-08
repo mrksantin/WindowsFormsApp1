@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace WindowsFormsApp1
 {
@@ -17,7 +13,6 @@ namespace WindowsFormsApp1
             this.x = x;
             this.y = y;
             this.z = z;
-
         }
     }
     public class Data
@@ -32,7 +27,5 @@ namespace WindowsFormsApp1
         public double Xipow2calc;
         public double Xipow2tabl;
         public double Level;
-    }
-    
-    
+    }   
 }

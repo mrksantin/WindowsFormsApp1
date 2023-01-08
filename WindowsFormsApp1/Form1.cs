@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows.Forms.DataVisualization.Charting;
 using System.Xml.Serialization;
 using Excel = Microsoft.Office.Interop.Excel;
 
@@ -49,8 +43,7 @@ namespace WindowsFormsApp1
                 double Xn = MainList.Min();
                 MainList.Sort();
                 Data.MainList = MainList;
-                dataGridView2.Rows.Clear();
-                
+                dataGridView2.Rows.Clear();                
                 double probab = 0;
                 Excel.Application excel = new Excel.Application();
                 while (Xn < MainList.Max())
@@ -64,8 +57,7 @@ namespace WindowsFormsApp1
                         {
                             n++;
                         }
-                    }
-                    
+                    }                  
                     
                     chart1.Series[0].Points.AddXY(Math.Round(Xn + Data.DeltaX / 2, 3), (double)n / (double)MainList.Count);
                     p = excel.WorksheetFunction.Norm_Dist(XnNext, Data.SelectMid, Math.Sqrt(Data.Disperse), true) - excel.WorksheetFunction.Norm_Dist(Xn, Data.SelectMid, Math.Sqrt(Data.Disperse), true);
@@ -143,17 +135,21 @@ namespace WindowsFormsApp1
         }
 
         private void button3_Click(object sender, EventArgs e)
-        {   
+        {
             OpenFileDialog openFile = new OpenFileDialog();
             openFile.Filter = "xml Файл|*.xml";
             XmlSerializer deserializer = new XmlSerializer(typeof(Data));
             if (openFile.ShowDialog() == DialogResult.OK)
-            {     
+            {
                 using (FileStream file = new FileStream(openFile.FileName, FileMode.OpenOrCreate))
                 {
                     Data = (Data)deserializer.Deserialize(file);
-                }                    
+                }
             }
+            GetData();
+        }
+        private void GetData()
+        {         
             label1.Text = "Выборочная средняя = " + Math.Round(Data.SelectMid);
             label2.Text = "Оценка дисперсии = " + Math.Round(Data.Disperse);
             dataGridView1.Rows.Clear();
@@ -230,7 +226,7 @@ namespace WindowsFormsApp1
 
         }
 
-        private void dataGridView4_CellEnter(object sender, DataGridViewCellEventArgs e)
+        private void dataGridView4_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             if (dataGridView4[0, dataGridView4.RowCount-2].Value == null)
             {
@@ -259,18 +255,16 @@ namespace WindowsFormsApp1
             }
             double xmid = points.Sum(n=>n.x) / points.Count, ymid=points.Sum(n=>n.y) / points.Count, zmid=points.Sum(n=>n.z) / points.Count;
             double xdisperse = points.Sum(n => Math.Pow(n.x - xmid, 2)) / (points.Count - 1), ydisperse = points.Sum(n => Math.Pow(n.y - ymid, 2)) / (points.Count - 1), zdisperse = points.Sum(n => Math.Pow(n.z - zmid, 2)) / (points.Count - 1);
-            x = points.Sum(n => (n.x - xmid) * (n.y - ymid) / (points.Count - 1) / xdisperse / ydisperse);
-            y = points.Sum(n => (n.y - ymid) * (n.z - zmid) / (points.Count - 1) / ydisperse / zdisperse);
-            z = points.Sum(n => (n.z - zmid) * (n.x - xmid) / (points.Count - 1) / zdisperse / xdisperse);
+            x = Math.Abs(points.Sum(n => (n.x - xmid) * (n.y - ymid)) / ((points.Count - 1) * xdisperse * ydisperse));
+            y = Math.Abs(points.Sum(n => (n.y - ymid) * (n.z - zmid)) / ((points.Count - 1) * ydisperse * zdisperse));
+            z = Math.Abs(points.Sum(n => (n.z - zmid) * (n.x - xmid)) / ((points.Count - 1) * zdisperse * xdisperse));
             dataGridView5.ColumnCount = 3;
             dataGridView5.RowCount = 3;
             for(int i = 0;i<3; i++) dataGridView5.Rows[i].Cells[i].Value = 1;
             dataGridView5.Rows[0].Cells[1].Value = Math.Round(x, 3);
             dataGridView5.Rows[0].Cells[2].Value = Math.Round(y, 3);
             dataGridView5.Rows[1].Cells[2].Value = Math.Round(z, 3);
-            dataGridView5.AutoResizeColumns();
-            
-
+            dataGridView5.AutoResizeColumns();           
         }
     }
 }
